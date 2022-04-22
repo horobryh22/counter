@@ -1,0 +1,31 @@
+.scoreboard {
+    width: 100px;
+    height: 100px;
+    background-color: #91c791;
+    margin: 50px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scoreboardReject {
+    background-color: #f14949;
+    width: 100px;
+    height: 100px;
+    margin: 50px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.counting {
+    font-size: 20px;
+    font-weight: 700;
+    color: #161617;
+}
+
+.countingStop {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f3eeee;
+}

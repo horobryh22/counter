@@ -1,0 +1,18 @@
+.button {
+    margin-top: 10px;
+    margin-left: 5px;
+    display: inline-block;
+    color: #4dad4d;
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: .5em 2em;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+.button:hover { background: rgba(255,255,255,.2); }
+.button:active { background: white;}
+.button:disabled {background: rgba(73, 65, 65, 0.3);}
