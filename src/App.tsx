@@ -5,16 +5,27 @@ import {Settings} from './components/Settings/Settings';
 
 function App() {
 
-    const [maxValue, setMaxValue] = useState<number>(1);
-    const [startValue, setStartValue] = useState<number>(0);
+    const [startCount, setStartCount] = useState<number>(0);
+    const [maxCount, setMaxCount] = useState<number>(1);
     const [count, setCount] = useState<number>(0);
+    const [error, setError] = useState<string | null>('');
 
-    console.log(maxValue, startValue);
+    const changeMaxValue = (value: number) => {
+        const maxValue = Number(value);
+        setMaxCount(maxValue);
+    }
+
+    const changeStartValue = (value: number) => {
+        setStartCount(value);
+        setCount(value);
+    }
+
+    console.log(startCount, maxCount, count);
 
     return (
         <div className="App">
-            <Settings setMaxValue={setMaxValue} setStartValue={setStartValue} maxValue={maxValue} startValue={startValue}/>
-            <Counter count={count} setCount={setCount} maxValue={maxValue} startValue={startValue}/>
+            <Settings changeMaxValue={changeMaxValue} changeStartValue={changeStartValue} setError={setError} error={error}/>
+            <Counter count={count} setCount={setCount} maxCount={maxCount} error={error} startCount={startCount}/>
         </div>
     );
 }

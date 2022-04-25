@@ -3,16 +3,18 @@ import classes from '../Counter/Counter.module.css';
 
 type ScoreboardType = {
     count: number
+    error: string | null
+    maxCount: number
 }
 
-export const Scoreboard: React.FC<ScoreboardType> = ({count}) => {
+export const Scoreboard: React.FC<ScoreboardType> = ({count, maxCount, error}) => {
 
-    const countClassName = count > 4 ? classes.countingStop : classes.counting;
-    const scoreboardClassName = count > 4 ? classes.scoreboardReject : classes.scoreboard;
+    const countClassName = count >= maxCount || error ? classes.countingStop : classes.counting;
+    const scoreboardClassName = count >= maxCount || error ? classes.scoreboardReject : classes.scoreboard;
 
     return (
         <div className={scoreboardClassName}>
-            <div className={countClassName}>{count}</div>
+            {error ? <div className={countClassName}>{error}</div> : <div className={countClassName}>{count}</div>}
         </div>
     );
 };

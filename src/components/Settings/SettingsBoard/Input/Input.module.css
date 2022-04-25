@@ -6,6 +6,10 @@
     text-align: center;
 }
 
+.error {
+    border: 2px solid red;
+}
+
 .wrapper {
     display: flex;
     justify-content: space-around;

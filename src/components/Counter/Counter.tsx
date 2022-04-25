@@ -5,27 +5,28 @@ import classes from './Counter.module.css';
 
 type CounterType = {
     count: number
+    error: string | null
+    maxCount: number
+    startCount: number
     setCount: (count: number) => void
-    maxValue: number
-    startValue: number
 }
 
-export const Counter: React.FC<CounterType> = ({count, setCount}) => {
+export const Counter: React.FC<CounterType> = ({count, setCount, maxCount, error, startCount}) => {
 
     const increaseCount = () => {
         setCount(count + 1);
     }
 
     const resetCount = () => {
-        setCount(0);
+        setCount(startCount);
     }
 
     return (
         <div className={classes.wrapperScoreboard}>
-            <Scoreboard count={count}/>
+            <Scoreboard count={count} maxCount={maxCount} error={error}/>
             <div>
-                <Button callback={() => increaseCount()} name={'inc'} disabled={count > 4}/>
-                <Button callback={() => resetCount()} name={'reset'} disabled={count === 0}/>
+                <Button callback={() => increaseCount()} name={'inc'} disabled={count >= maxCount || error !== null}/>
+                <Button callback={() => resetCount()} name={'reset'} disabled={count === startCount}/>
             </div>
         </div>
     );
