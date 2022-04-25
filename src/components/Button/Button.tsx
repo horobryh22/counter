@@ -8,10 +8,7 @@ type ButtonType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTM
 
 export const Button: React.FC<ButtonType> = ({name, callback, ...restProps}) => {
 
-    const onClickHandler = () => {
-        callback();
-    }
-
-    return <button onClick={onClickHandler} className={classes.button}  {...restProps}>{name}</button>
+    return <button onClick={() => callback()} className={classes.button}  {...restProps}>{name}</button>
 };
+
 

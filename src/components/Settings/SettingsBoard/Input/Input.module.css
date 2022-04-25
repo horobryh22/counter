@@ -1,0 +1,19 @@
+.input {
+    width: 30%;
+    border: 2px solid green;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.title {
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 45%;
+}

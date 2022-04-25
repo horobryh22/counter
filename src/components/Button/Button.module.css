@@ -10,9 +10,10 @@
     outline: none;
     border: 2px solid;
     border-radius: 1px;
-    transition: 0.2s;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
-.button:hover { background: rgba(255,255,255,.2); }
+.button:hover { background: rgb(85, 166, 85, 0.2); }
 .button:active { background: white;}
-.button:disabled {background: rgba(73, 65, 65, 0.3);}
+.button:disabled {background: rgba(73, 65, 65, 0.3); cursor: default}
