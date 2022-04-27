@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import {SettingsBoard} from './SettingsBoard/SettingsBoard';
 import {Button} from '../Button/Button';
-import classes from './../Counter/Counter.module.css'
+import classes from './Settings.module.css'
 
 export type SettingsType = {
     error: string | null
     setError: (error: string | null) => void
+    setTextMessage: (message: string | null) => void
     changeMaxValue: (value: number) => void
     changeStartValue : (value: number) => void
 }
 
-export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxValue, setError, error}) => {
+export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxValue, setError, error, setTextMessage}) => {
 
     const [maxValue, setMaxValue] = useState<number>(1);
     const [startValue, setStartValue] = useState<number>(0);
@@ -20,6 +21,7 @@ export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxVal
 
     const onClickHandler = () => {
         if (!condition) {
+            setTextMessage(null);
             changeMaxValue(maxValue);
             changeStartValue(startValue);
             setError(null);
@@ -28,8 +30,19 @@ export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxVal
 
     return (
         <div className={classes.wrapperSettings}>
-            <SettingsBoard error={error} setMaxValue={setMaxValue} setStartValue={setStartValue} maxValue={maxValue} startValue={startValue}/>
-            <Button callback={onClickHandler} name={'set'} disabled={condition}/>
+            <SettingsBoard
+                error={error}
+                setMaxValue={setMaxValue}
+                setStartValue={setStartValue}
+                maxValue={maxValue}
+                startValue={startValue}
+                setTextMessage={setTextMessage}
+            />
+            <Button
+                callback={onClickHandler}
+                name={'set'}
+                disabled={condition}
+            />
         </div>
     );
 };

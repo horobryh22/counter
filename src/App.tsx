@@ -5,14 +5,14 @@ import {Settings} from './components/Settings/Settings';
 
 function App() {
 
+    const [textMessage, setTextMessage] = useState<string | null>('Set values and enter "set"');
     const [startCount, setStartCount] = useState<number>(0);
     const [maxCount, setMaxCount] = useState<number>(1);
     const [count, setCount] = useState<number>(0);
-    const [error, setError] = useState<string | null>('');
+    const [error, setError] = useState<string | null>(null);
 
     const changeMaxValue = (value: number) => {
-        const maxValue = Number(value);
-        setMaxCount(maxValue);
+        setMaxCount(value);
     }
 
     const changeStartValue = (value: number) => {
@@ -20,12 +20,23 @@ function App() {
         setCount(value);
     }
 
-    console.log(startCount, maxCount, count);
-
     return (
         <div className="App">
-            <Settings changeMaxValue={changeMaxValue} changeStartValue={changeStartValue} setError={setError} error={error}/>
-            <Counter count={count} setCount={setCount} maxCount={maxCount} error={error} startCount={startCount}/>
+            <Settings
+                changeMaxValue={changeMaxValue}
+                changeStartValue={changeStartValue}
+                setError={setError}
+                setTextMessage={setTextMessage}
+                error={error}
+            />
+            <Counter
+                textMessage={textMessage}
+                count={count}
+                setCount={setCount}
+                maxCount={maxCount}
+                error={error}
+                startCount={startCount}
+            />
         </div>
     );
 }

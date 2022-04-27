@@ -8,10 +8,11 @@ type CounterType = {
     error: string | null
     maxCount: number
     startCount: number
+    textMessage: string | null
     setCount: (count: number) => void
 }
 
-export const Counter: React.FC<CounterType> = ({count, setCount, maxCount, error, startCount}) => {
+export const Counter: React.FC<CounterType> = ({count, setCount, maxCount, error, startCount, textMessage}) => {
 
     const increaseCount = () => {
         setCount(count + 1);
@@ -23,7 +24,7 @@ export const Counter: React.FC<CounterType> = ({count, setCount, maxCount, error
 
     return (
         <div className={classes.wrapperScoreboard}>
-            <Scoreboard count={count} maxCount={maxCount} error={error}/>
+            <Scoreboard count={count} maxCount={maxCount} error={error} textMessage={textMessage}/>
             <div>
                 <Button callback={() => increaseCount()} name={'inc'} disabled={count >= maxCount || error !== null}/>
                 <Button callback={() => resetCount()} name={'reset'} disabled={count === startCount}/>

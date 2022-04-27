@@ -5,16 +5,29 @@ import {Input} from './Input/Input';
 export type SettingsBoardType = {
     setMaxValue: (maxValue: number) => void
     setStartValue: (startValue: number) => void
+    setTextMessage: (message: string | null) => void
     error: string | null
     maxValue: number
     startValue: number
 }
 
-export const SettingsBoard: React.FC<SettingsBoardType> = ({setMaxValue, setStartValue, maxValue, startValue, error}) => {
+export const SettingsBoard: React.FC<SettingsBoardType> = ({setTextMessage,setMaxValue, setStartValue, maxValue, startValue, error}) => {
     return (
         <div className={classes.settingsBoard}>
-            <Input name={'Max Value:'} callback={setMaxValue} value={maxValue} error={error}/>
-            <Input name={'Start Value:'} callback={setStartValue} value={startValue} error={error}/>
+            <Input
+                name={'Max Value:'}
+                callback={setMaxValue}
+                value={maxValue.toString()}
+                error={error}
+                setTextMessage={setTextMessage}
+            />
+            <Input
+                setTextMessage={setTextMessage}
+                name={'Start Value:'}
+                callback={setStartValue}
+                value={startValue.toString()}
+                error={error}
+            />
         </div>
     );
 };
