@@ -26,7 +26,7 @@ export const Counter: React.FC<CounterType> = ({count, setCount, maxCount, error
         <div className={classes.wrapperScoreboard}>
             <Scoreboard count={count} maxCount={maxCount} error={error} textMessage={textMessage}/>
             <div>
-                <Button callback={() => increaseCount()} name={'inc'} disabled={count >= maxCount || error !== null}/>
+                <Button callback={() => increaseCount()} name={'inc'} disabled={count >= maxCount || error !== null || textMessage !== null}/>
                 <Button callback={() => resetCount()} name={'reset'} disabled={count === startCount}/>
             </div>
         </div>
