@@ -11,7 +11,7 @@ export type SettingsBoardType = {
     startValue: number
 }
 
-export const SettingsBoard: React.FC<SettingsBoardType> = ({setTextMessage,setMaxValue, setStartValue, maxValue, startValue, error}) => {
+export const SettingsBoard: React.FC<SettingsBoardType> = React.memo(({setTextMessage,setMaxValue, setStartValue, maxValue, startValue, error}) => {
     return (
         <div className={classes.settingsBoard}>
             <Input
@@ -30,4 +30,4 @@ export const SettingsBoard: React.FC<SettingsBoardType> = ({setTextMessage,setMa
             />
         </div>
     );
-};
+});

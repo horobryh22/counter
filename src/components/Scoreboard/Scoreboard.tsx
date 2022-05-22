@@ -8,7 +8,7 @@ type ScoreboardType = {
     textMessage: string | null
 }
 
-export const Scoreboard: React.FC<ScoreboardType> = ({count, maxCount, error, textMessage}) => {
+export const Scoreboard: React.FC<ScoreboardType> = React.memo(({count, maxCount, error, textMessage}) => {
 
     const countClassName = count >= maxCount || error ? classes.countingStop : classes.counting;
     const scoreboardClassName = count >= maxCount || error ? classes.scoreboardReject : classes.scoreboard;
@@ -19,4 +19,4 @@ export const Scoreboard: React.FC<ScoreboardType> = ({count, maxCount, error, te
             {error ? <div className={countClassName}>{error}</div> : <div className={countClassName}>{condition}</div>}
         </div>
     );
-};
+});

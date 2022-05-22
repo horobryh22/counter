@@ -6,9 +6,9 @@ type ButtonType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTM
     callback: () => void
 }
 
-export const Button: React.FC<ButtonType> = ({name, callback, ...restProps}) => {
+export const Button: React.FC<ButtonType> = React.memo(({name, callback, ...restProps}) => {
 
-    return <button onClick={() => callback()} className={classes.button}  {...restProps}>{name}</button>
-};
+    return <button onClick={callback} className={classes.button}  {...restProps}>{name}</button>
+});
 
 

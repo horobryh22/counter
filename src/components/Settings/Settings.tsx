@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SettingsBoard} from './SettingsBoard/SettingsBoard';
 import {Button} from '../Button/Button';
 import classes from './Settings.module.css'
@@ -11,7 +11,7 @@ export type SettingsType = {
     changeStartValue : (value: number) => void
 }
 
-export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxValue, setError, error, setTextMessage}) => {
+export const Settings: React.FC<SettingsType> = React.memo(({changeStartValue, changeMaxValue, setError, error, setTextMessage}) => {
 
     const [maxValue, setMaxValue] = useState<number>(2);
     const [startValue, setStartValue] = useState<number>(1);
@@ -35,6 +35,7 @@ export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxVal
 
     }, []);
 
+
     useEffect(() => {
         condition ? setError('Incorrect value') : setError(null);     // оборачиваем в UseEffect так как при отрисовки компоненты Settings код
                                                                                 // доходит до этой стройки, и происход снова перерисовка компоненты App,
@@ -45,14 +46,14 @@ export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxVal
     }, [condition]);
 
 
-    const onClickHandler = () => {
+    const onClickHandler = useCallback(() => {
         if (!condition) {
             changeMaxValue(maxValue);
             changeStartValue(startValue);
             setError(null);
             setTextMessage(null);
         }
-    }
+    }, [condition, maxValue, startValue]);
 
     return (
         <div className={classes.wrapperSettings}>
@@ -71,4 +72,4 @@ export const Settings: React.FC<SettingsType> = ({changeStartValue, changeMaxVal
             />
         </div>
     );
-};
+});

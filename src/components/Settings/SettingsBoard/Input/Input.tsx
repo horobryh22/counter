@@ -1,4 +1,4 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes} from 'react';
+import React, {DetailedHTMLProps, InputHTMLAttributes, useRef} from 'react';
 import classes from './Input.module.css';
 
 export type InputType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
@@ -8,12 +8,13 @@ export type InputType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
     setTextMessage: (message: string | null) => void
 }
 
-export const Input: React.FC<InputType> = ({name, callback, error, setTextMessage, ...rest}) => {
+export const Input: React.FC<InputType> = React.memo(({name, callback, error, setTextMessage, ...rest}) => {
 
     const inputClassName = error ? classes.input + ' ' + classes.error : classes.input;
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = Number(e.currentTarget.value);
+    const onChangeHandler = () => {
+        const value = Number(inputRef.current?.value);
         callback((value));
         setTextMessage('Set values and enter "set"');
     }
@@ -22,6 +23,7 @@ export const Input: React.FC<InputType> = ({name, callback, error, setTextMessag
         <div className={classes.wrapper}>
             <div className={classes.title}>{name}</div>
             <input
+                ref={inputRef}
                 onChange={onChangeHandler}
                 className={inputClassName}
                 type="number"
@@ -29,4 +31,4 @@ export const Input: React.FC<InputType> = ({name, callback, error, setTextMessag
             />
         </div>
     );
-};
+});
