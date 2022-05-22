@@ -1,31 +1,31 @@
 import React from 'react';
 import classes from './SettingsBoard.module.css'
 import {Input} from './Input/Input';
+import {useDispatch, useSelector} from 'react-redux';
+import {StateType} from '../../../redux/store';
+import {setMaxValueAC, setStartValueAC, ValuesType} from '../../../redux/counter-reducer';
 
 export type SettingsBoardType = {
-    setMaxValue: (maxValue: number) => void
-    setStartValue: (startValue: number) => void
-    setTextMessage: (message: string | null) => void
     error: string | null
-    maxValue: number
-    startValue: number
 }
 
-export const SettingsBoard: React.FC<SettingsBoardType> = React.memo(({setTextMessage,setMaxValue, setStartValue, maxValue, startValue, error}) => {
+export const SettingsBoard: React.FC<SettingsBoardType> = React.memo(({error}) => {
+
+    const dispatch = useDispatch();
+    const values = useSelector<StateType, ValuesType>(state => state.counter.values);
+
     return (
         <div className={classes.settingsBoard}>
             <Input
                 name={'Max Value:'}
-                callback={setMaxValue}
-                value={maxValue.toString()}
+                callback={(value) => dispatch(setMaxValueAC(value))}
+                value={values.maxValue.toString()}
                 error={error}
-                setTextMessage={setTextMessage}
             />
             <Input
-                setTextMessage={setTextMessage}
                 name={'Start Value:'}
-                callback={setStartValue}
-                value={startValue.toString()}
+                callback={(value) => dispatch(setStartValueAC(value))}
+                value={values.startValue.toString()}
                 error={error}
             />
         </div>

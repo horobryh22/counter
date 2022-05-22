@@ -1,14 +1,17 @@
 import React, {DetailedHTMLProps, InputHTMLAttributes, useRef} from 'react';
 import classes from './Input.module.css';
+import {useDispatch} from 'react-redux';
+import {setTextMessageAC} from '../../../../redux/counter-reducer';
 
 export type InputType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
     name: string
     error: string | null
     callback: (value: number) => void
-    setTextMessage: (message: string | null) => void
 }
 
-export const Input: React.FC<InputType> = React.memo(({name, callback, error, setTextMessage, ...rest}) => {
+export const Input: React.FC<InputType> = React.memo(({name, callback, error, ...rest}) => {
+
+    const dispatch = useDispatch();
 
     const inputClassName = error ? classes.input + ' ' + classes.error : classes.input;
     const inputRef = useRef<HTMLInputElement>(null);
@@ -16,7 +19,7 @@ export const Input: React.FC<InputType> = React.memo(({name, callback, error, se
     const onChangeHandler = () => {
         const value = Number(inputRef.current?.value);
         callback((value));
-        setTextMessage('Set values and enter "set"');
+        dispatch(setTextMessageAC('Set values and enter "set"'));
     }
 
     return (

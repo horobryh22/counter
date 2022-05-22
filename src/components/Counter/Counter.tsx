@@ -26,7 +26,7 @@ export const Counter: React.FC<CounterType> = React.memo(({count, setCount, maxC
         <div className={classes.wrapperScoreboard}>
             <Scoreboard count={count} maxCount={maxCount} error={error} textMessage={textMessage}/>
             <div>
-                <Button callback={increaseCount} name={'inc'} disabled={count >= maxCount || error !== null || textMessage !== null}/>
+                <Button callback={increaseCount} name={'inc'} disabled={count >= maxCount || error !== null || textMessage !== ''}/>
                 <Button callback={resetCount} name={'reset'} disabled={count === startCount}/>
             </div>
         </div>
