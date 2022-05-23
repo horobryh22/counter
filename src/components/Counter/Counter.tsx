@@ -3,7 +3,7 @@ import {Button} from '../Button/Button';
 import {Scoreboard} from '../Scoreboard/Scoreboard';
 import classes from './Counter.module.css';
 import {useDispatch, useSelector} from 'react-redux';
-import {MainCountsType, MessagesType, setCountAC} from '../../redux/counter-reducer';
+import {setCountAC} from '../../redux/counter-reducer';
 import {StateType} from '../../redux/store';
 
 type CounterType = {}
@@ -37,7 +37,7 @@ export const Counter: React.FC<CounterType> = React.memo(() => {
                 <Button
                     callback={resetCount}
                     name={'reset'}
-                    disabled={currentCount === startCount}
+                    disabled={error !== '' || textMessage !== '' || currentCount === startCount}
                 />
             </div>
         </div>

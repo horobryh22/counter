@@ -1,47 +1,23 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {SettingsBoard} from './SettingsBoard/SettingsBoard';
 import {Button} from '../Button/Button';
 import classes from './Settings.module.css'
-import {useDispatch, useSelector} from 'react-redux';
-import {
-    MainCountsType, setCountAC, setErrorAC, setMaxCountAC,
-    setMaxValueAC, setStartCountAC,
-    setStartValueAC,
-    setTextMessageAC,
-    ValuesType
-} from '../../redux/counter-reducer';
-import {StateType} from '../../redux/store';
+import {useSelector} from 'react-redux';
+import {setCountAC, setErrorAC, setTextMessageAC, setValuesToLocalStoreTC} from '../../redux/counter-reducer';
+import {StateType, useTypedDispatch} from '../../redux/store';
 
 export type SettingsType = {}
 
 export const Settings: React.FC<SettingsType> = React.memo(() => {
 
-    const dispatch = useDispatch();
-    const values = useSelector<StateType, ValuesType>(state => state.counter.values);
+    const dispatch = useTypedDispatch();
+    const maxCount = useSelector<StateType, number>(state => state.counter.mainCounts.maxCount);
+    const startCount = useSelector<StateType, number>(state => state.counter.mainCounts.startCount);
 
-    const condition = values.maxValue < values.startValue
-        || values.maxValue < 0
-        || values.startValue < 0
-        || values.startValue === values.maxValue;
-
-    useEffect(() => {
-        const maxCount = localStorage.getItem('maxCount');
-        const startCount = localStorage.getItem('startCount');
-
-        if (maxCount) {
-            const value = JSON.parse(maxCount);
-            dispatch(setMaxValueAC(value))
-            dispatch(setMaxCountAC(value));
-        }
-
-        if (startCount) {
-            const value = JSON.parse(startCount);
-            dispatch(setStartValueAC(value))
-            dispatch(setStartCountAC(value));
-            dispatch(setCountAC(value));
-        }
-
-    }, []);
+    const condition = maxCount < startCount
+        || maxCount < 0
+        || startCount < 0
+        || startCount === maxCount;
 
 
     useEffect(() => {
@@ -51,14 +27,13 @@ export const Settings: React.FC<SettingsType> = React.memo(() => {
         // происходило, мы используем UseEffect и говорим,
         //что только при изменении нашего Condition будем запускаться
         // перерисовка.
-    }, [condition]);
+    }, [condition, dispatch]);
 
 
     const onClickHandler = () => {
         if (!condition) {
-            dispatch(setMaxCountAC(values.maxValue));
-            dispatch(setStartCountAC(values.startValue));
-            dispatch(setCountAC(values.startValue));
+            dispatch(setValuesToLocalStoreTC())
+            dispatch(setCountAC(startCount));
             dispatch(setErrorAC(''))
             dispatch(setTextMessageAC(''))
         }

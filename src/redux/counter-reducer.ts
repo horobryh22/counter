@@ -1,3 +1,5 @@
+import {StateType} from './store';
+
 export type MessagesType = {
     initialMessage: string
     errorMessage: string
@@ -7,14 +9,8 @@ export type MainCountsType = {
     maxCount: number
     currentCount: number
 }
-export type  ValuesType = {
-    maxValue: number
-    startValue: number
-}
 
-type ActionsType = ReturnType<typeof setTextMessageAC>
-    | ReturnType<typeof setStartValueAC>
-    | ReturnType<typeof setMaxValueAC>
+export type ActionsType = ReturnType<typeof setTextMessageAC>
     | ReturnType<typeof setStartCountAC>
     | ReturnType<typeof setMaxCountAC>
     | ReturnType<typeof setCountAC>
@@ -29,11 +25,7 @@ const initialState = {
         startCount: 0,
         maxCount: 1,
         currentCount: 0
-    } as MainCountsType,
-    values: {
-        maxValue: 2,
-        startValue: 1
-    } as ValuesType
+    } as MainCountsType
 }
 
 export type InitialStateType = typeof initialState;
@@ -43,10 +35,6 @@ export const counterReducer = (state: InitialStateType = initialState, action: A
     switch (action.type) {
         case 'SET-TEXT-MESSAGE':
             return {...state, messages: {...state.messages, initialMessage: action.payload.message}}
-        case 'SET-START-VALUE':
-            return {...state, values: {...state.values, startValue: action.payload.value}}
-        case 'SET-MAX-VALUE':
-            return {...state, values: {...state.values, maxValue: action.payload.value}}
         case 'SET-START-COUNT':
             return {...state, mainCounts: {...state.mainCounts, startCount: action.payload.value}}
         case 'SET-MAX-COUNT':
@@ -67,23 +55,7 @@ export const setTextMessageAC = (message: string) => {
             message
         }
     } as const
-}
-export const setStartValueAC = (value: number) => {
-    return {
-        type: 'SET-START-VALUE',
-        payload: {
-            value
-        }
-    } as const
-}
-export const setMaxValueAC = (value: number) => {
-    return {
-        type: 'SET-MAX-VALUE',
-        payload: {
-            value
-        }
-    } as const
-}
+};
 export const setStartCountAC = (value:number) => {
     return {
         type: 'SET-START-COUNT',
@@ -91,7 +63,7 @@ export const setStartCountAC = (value:number) => {
             value
         }
     } as const
-}
+};
 export const setMaxCountAC = (value:number) => {
     return {
         type: 'SET-MAX-COUNT',
@@ -99,7 +71,7 @@ export const setMaxCountAC = (value:number) => {
             value
         }
     } as const
-}
+};
 export const setCountAC = (value: number) => {
     return {
         type: 'SET-COUNT',
@@ -107,7 +79,7 @@ export const setCountAC = (value: number) => {
             value
         }
     } as const
-}
+};
 export const setErrorAC = (error: string) => {
     return {
         type: 'SET-ERROR',
@@ -115,4 +87,31 @@ export const setErrorAC = (error: string) => {
             error
         }
     } as const
+};
+export const getValuesToLocalStoreTC = () => (dispatch: (action: ActionsType) => void) => {
+
+    const maxCount = localStorage.getItem('maxCount');
+    const startCount = localStorage.getItem('startCount');
+
+    if (maxCount) {
+        const value = JSON.parse(maxCount);
+        dispatch(setMaxCountAC(value));
+    }
+
+    if (startCount) {
+        const value = JSON.parse(startCount);
+        dispatch(setStartCountAC(value));
+        dispatch(setCountAC(value));
+    }
+}
+
+export const setValuesToLocalStoreTC = () => (dispatch: (action: ActionsType) => void, getState: () => StateType): void => {
+
+    const maxCount = getState().counter.mainCounts.maxCount;
+    const startCount = getState().counter.mainCounts.startCount;
+
+    localStorage.setItem('startCount', JSON.stringify(startCount));
+    localStorage.setItem('maxCount', JSON.stringify(maxCount));
+    dispatch(setMaxCountAC(maxCount));
+    dispatch(setStartCountAC(startCount));
 }
