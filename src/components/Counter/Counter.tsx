@@ -2,32 +2,43 @@ import React, {useCallback} from 'react';
 import {Button} from '../Button/Button';
 import {Scoreboard} from '../Scoreboard/Scoreboard';
 import classes from './Counter.module.css';
+import {useDispatch, useSelector} from 'react-redux';
+import {MainCountsType, MessagesType, setCountAC} from '../../redux/counter-reducer';
+import {StateType} from '../../redux/store';
 
-type CounterType = {
-    count: number
-    error: string | null
-    maxCount: number
-    startCount: number
-    textMessage: string | null
-    setCount: (count: number) => void
-}
+type CounterType = {}
 
-export const Counter: React.FC<CounterType> = React.memo(({count, setCount, maxCount, error, startCount, textMessage}) => {
+export const Counter: React.FC<CounterType> = React.memo(() => {
+
+    const dispatch = useDispatch();
+    const error = useSelector<StateType, string>(state => state.counter.messages.errorMessage);
+    const textMessage = useSelector<StateType, string>(state => state.counter.messages.initialMessage);
+    const currentCount = useSelector<StateType, number>(state => state.counter.mainCounts.currentCount);
+    const startCount = useSelector<StateType, number>(state => state.counter.mainCounts.startCount);
+    const maxCount = useSelector<StateType, number>(state => state.counter.mainCounts.maxCount);
 
     const increaseCount = useCallback(() => {
-        setCount(count + 1);
-    }, [count]);
+        dispatch(setCountAC(currentCount + 1))
+    }, [currentCount, dispatch]);
 
     const resetCount = useCallback(() => {
-        setCount(startCount);
-    }, [startCount]);
+        dispatch(setCountAC(startCount))
+    }, [startCount, dispatch]);
 
     return (
         <div className={classes.wrapperScoreboard}>
-            <Scoreboard count={count} maxCount={maxCount} error={error} textMessage={textMessage}/>
+            <Scoreboard/>
             <div>
-                <Button callback={increaseCount} name={'inc'} disabled={count >= maxCount || error !== null || textMessage !== ''}/>
-                <Button callback={resetCount} name={'reset'} disabled={count === startCount}/>
+                <Button
+                    callback={increaseCount}
+                    name={'inc'}
+                    disabled={currentCount >= maxCount || error !== '' || textMessage !== ''}
+                />
+                <Button
+                    callback={resetCount}
+                    name={'reset'}
+                    disabled={currentCount === startCount}
+                />
             </div>
         </div>
     );

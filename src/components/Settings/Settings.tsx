@@ -4,22 +4,17 @@ import {Button} from '../Button/Button';
 import classes from './Settings.module.css'
 import {useDispatch, useSelector} from 'react-redux';
 import {
-    MainCountsType,
-    setMaxValueAC,
+    MainCountsType, setCountAC, setErrorAC, setMaxCountAC,
+    setMaxValueAC, setStartCountAC,
     setStartValueAC,
     setTextMessageAC,
     ValuesType
 } from '../../redux/counter-reducer';
 import {StateType} from '../../redux/store';
 
-export type SettingsType = {
-    error: string | null
-    setError: (error: string | null) => void
-    changeMaxValue: (value: number) => void
-    changeStartValue: (value: number) => void
-}
+export type SettingsType = {}
 
-export const Settings: React.FC<SettingsType> = React.memo(({changeStartValue, changeMaxValue, setError, error}) => {
+export const Settings: React.FC<SettingsType> = React.memo(() => {
 
     const dispatch = useDispatch();
     const values = useSelector<StateType, ValuesType>(state => state.counter.values);
@@ -29,9 +24,6 @@ export const Settings: React.FC<SettingsType> = React.memo(({changeStartValue, c
         || values.startValue < 0
         || values.startValue === values.maxValue;
 
-    // const [maxValue, setMaxValue] = useState<number>(2);
-    // const [startValue, setStartValue] = useState<number>(1);
-
     useEffect(() => {
         const maxCount = localStorage.getItem('maxCount');
         const startCount = localStorage.getItem('startCount');
@@ -39,20 +31,21 @@ export const Settings: React.FC<SettingsType> = React.memo(({changeStartValue, c
         if (maxCount) {
             const value = JSON.parse(maxCount);
             dispatch(setMaxValueAC(value))
-            changeMaxValue(value);
+            dispatch(setMaxCountAC(value));
         }
 
         if (startCount) {
             const value = JSON.parse(startCount);
             dispatch(setStartValueAC(value))
-            changeStartValue(value);
+            dispatch(setStartCountAC(value));
+            dispatch(setCountAC(value));
         }
 
     }, []);
 
 
     useEffect(() => {
-        condition ? setError('Incorrect value') : setError(null);     // оборачиваем в UseEffect так как при отрисовки компоненты Settings код
+        condition ? dispatch(setErrorAC('Incorrect value')) : dispatch(setErrorAC(''));     // оборачиваем в UseEffect так как при отрисовки компоненты Settings код
         // доходит до этой стройки, и происход снова перерисовка компоненты App,
         // так как мы через setError изменяем значение в state. Чтобы этого не
         // происходило, мы используем UseEffect и говорим,
@@ -63,18 +56,17 @@ export const Settings: React.FC<SettingsType> = React.memo(({changeStartValue, c
 
     const onClickHandler = () => {
         if (!condition) {
-            changeMaxValue(values.maxValue);
-            changeStartValue(values.startValue);
-            setError(null);
+            dispatch(setMaxCountAC(values.maxValue));
+            dispatch(setStartCountAC(values.startValue));
+            dispatch(setCountAC(values.startValue));
+            dispatch(setErrorAC(''))
             dispatch(setTextMessageAC(''))
         }
     }
 
     return (
         <div className={classes.wrapperSettings}>
-            <SettingsBoard
-                error={error}
-            />
+            <SettingsBoard/>
             <Button
                 callback={onClickHandler}
                 name={'set'}

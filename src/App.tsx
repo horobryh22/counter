@@ -4,49 +4,23 @@ import {Counter} from './components/Counter/Counter';
 import {Settings} from './components/Settings/Settings';
 import {useDispatch, useSelector} from 'react-redux';
 import {StateType} from './redux/store';
-import {MainCountsType, MessagesType} from './redux/counter-reducer';
+import {MainCountsType, MessagesType, setCountAC, setMaxCountAC, setStartCountAC} from './redux/counter-reducer';
 
 function App() {
 
-    const messages = useSelector<StateType, MessagesType>(state => state.counter.messages);
-    const mainCounts = useSelector<StateType, MainCountsType>(state => state.counter.mainCounts);
-
-
-    const [startCount, setStartCount] = useState<number>(0);
-    const [maxCount, setMaxCount] = useState<number>(1);
-    const [count, setCount] = useState<number>(0);
-    const [error, setError] = useState<string | null>(null);
+    const startCount = useSelector<StateType, number>(state => state.counter.mainCounts.startCount);
+    const maxCount = useSelector<StateType, number>(state => state.counter.mainCounts.maxCount);
 
     useEffect(() => {
         localStorage.setItem('startCount', JSON.stringify(startCount));
         localStorage.setItem('maxCount', JSON.stringify(maxCount));
     }, [startCount, maxCount]);
 
-    const changeMaxValue = useCallback((value: number) => {
-            setMaxCount(value);
-        }, [])
-
-    const changeStartValue = useCallback((value: number) => {
-        setStartCount(value);
-        setCount(value);
-    }, [])
 
     return (
         <div className="App">
-            <Settings
-                changeMaxValue={changeMaxValue}
-                changeStartValue={changeStartValue}
-                setError={setError}
-                error={error}
-            />
-            <Counter
-                textMessage={messages.initialMessage}
-                count={count}
-                setCount={setCount}
-                maxCount={maxCount}
-                error={error}
-                startCount={startCount}
-            />
+            <Settings/>
+            <Counter/>
         </div>
     );
 }

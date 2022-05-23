@@ -1,18 +1,20 @@
 import React from 'react';
 import classes from './Scoreboard.module.css';
+import {useSelector} from 'react-redux';
+import {StateType} from '../../redux/store';
 
-type ScoreboardType = {
-    count: number
-    error: string | null
-    maxCount: number
-    textMessage: string | null
-}
+type ScoreboardType = {}
 
-export const Scoreboard: React.FC<ScoreboardType> = React.memo(({count, maxCount, error, textMessage}) => {
+export const Scoreboard: React.FC<ScoreboardType> = React.memo(() => {
 
-    const countClassName = count >= maxCount || error ? classes.countingStop : classes.counting;
-    const scoreboardClassName = count >= maxCount || error ? classes.scoreboardReject : classes.scoreboard;
-    const condition = textMessage ? textMessage : count;
+    const error = useSelector<StateType, string>(state => state.counter.messages.errorMessage);
+    const textMessage = useSelector<StateType, string>(state => state.counter.messages.initialMessage);
+    const currentCount = useSelector<StateType, number>(state => state.counter.mainCounts.currentCount);
+    const maxCount = useSelector<StateType, number>(state => state.counter.mainCounts.maxCount);
+
+    const countClassName = currentCount >= maxCount || error ? classes.countingStop : classes.counting;
+    const scoreboardClassName = currentCount >= maxCount || error ? classes.scoreboardReject : classes.scoreboard;
+    const condition = textMessage ? textMessage : currentCount;
 
     return (
         <div className={scoreboardClassName}>

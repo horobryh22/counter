@@ -12,7 +12,13 @@ export type  ValuesType = {
     startValue: number
 }
 
-type ActionsType = ReturnType<typeof setTextMessageAC> | ReturnType<typeof setStartValueAC> | ReturnType<typeof setMaxValueAC>;
+type ActionsType = ReturnType<typeof setTextMessageAC>
+    | ReturnType<typeof setStartValueAC>
+    | ReturnType<typeof setMaxValueAC>
+    | ReturnType<typeof setStartCountAC>
+    | ReturnType<typeof setMaxCountAC>
+    | ReturnType<typeof setCountAC>
+    | ReturnType<typeof setErrorAC>;
 
 const initialState = {
     messages: {
@@ -41,6 +47,14 @@ export const counterReducer = (state: InitialStateType = initialState, action: A
             return {...state, values: {...state.values, startValue: action.payload.value}}
         case 'SET-MAX-VALUE':
             return {...state, values: {...state.values, maxValue: action.payload.value}}
+        case 'SET-START-COUNT':
+            return {...state, mainCounts: {...state.mainCounts, startCount: action.payload.value}}
+        case 'SET-MAX-COUNT':
+            return {...state, mainCounts: {...state.mainCounts, maxCount: action.payload.value}}
+        case 'SET-COUNT':
+            return {...state, mainCounts: {...state.mainCounts, currentCount: action.payload.value}}
+        case 'SET-ERROR':
+            return {...state, messages: {...state.messages, errorMessage: action.payload.error}}
         default:
             return state;
     }
@@ -67,6 +81,38 @@ export const setMaxValueAC = (value: number) => {
         type: 'SET-MAX-VALUE',
         payload: {
             value
+        }
+    } as const
+}
+export const setStartCountAC = (value:number) => {
+    return {
+        type: 'SET-START-COUNT',
+        payload: {
+            value
+        }
+    } as const
+}
+export const setMaxCountAC = (value:number) => {
+    return {
+        type: 'SET-MAX-COUNT',
+        payload: {
+            value
+        }
+    } as const
+}
+export const setCountAC = (value: number) => {
+    return {
+        type: 'SET-COUNT',
+        payload: {
+            value
+        }
+    } as const
+}
+export const setErrorAC = (error: string) => {
+    return {
+        type: 'SET-ERROR',
+        payload: {
+            error
         }
     } as const
 }
