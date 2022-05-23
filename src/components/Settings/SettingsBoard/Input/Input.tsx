@@ -1,7 +1,8 @@
-import React, {DetailedHTMLProps, InputHTMLAttributes, useRef} from 'react';
+import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes} from 'react';
 import classes from './Input.module.css';
-import {useDispatch} from 'react-redux';
-import {setTextMessageAC} from '../../../../redux/counter-reducer';
+import {useTypedDispatch} from '../../../../toolkit-redux/toolkit-store';
+import {setTextMessage} from '../../../../toolkit-redux/toolkit-counter-slice';
+
 
 export type InputType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
     name: string
@@ -11,22 +12,20 @@ export type InputType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
 
 export const Input: React.FC<InputType> = React.memo(({name, callback, error, ...rest}) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useTypedDispatch();
 
     const inputClassName = error ? classes.input + ' ' + classes.error : classes.input;
-    const inputRef = useRef<HTMLInputElement>(null);
 
-    const onChangeHandler = () => {
-        const value = Number(inputRef.current?.value);
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = Number(e.currentTarget.value);
         callback((value));
-        dispatch(setTextMessageAC('Set values and enter "set"'));
+        dispatch(setTextMessage('Set values and enter "set"'));
     }
 
     return (
         <div className={classes.wrapper}>
             <div className={classes.title}>{name}</div>
             <input
-                ref={inputRef}
                 onChange={onChangeHandler}
                 className={inputClassName}
                 type="number"

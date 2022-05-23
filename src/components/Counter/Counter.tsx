@@ -2,28 +2,22 @@ import React, {useCallback} from 'react';
 import {Button} from '../Button/Button';
 import {Scoreboard} from '../Scoreboard/Scoreboard';
 import classes from './Counter.module.css';
-import {useDispatch, useSelector} from 'react-redux';
-import {setCountAC} from '../../redux/counter-reducer';
-import {StateType} from '../../redux/store';
+import {useTypedDispatch, useTypedSelector} from '../../toolkit-redux/toolkit-store';
+import {setCount} from '../../toolkit-redux/toolkit-counter-slice';
 
-type CounterType = {}
+export const Counter: React.FC = React.memo(() => {
 
-export const Counter: React.FC<CounterType> = React.memo(() => {
-
-    const dispatch = useDispatch();
-    const error = useSelector<StateType, string>(state => state.counter.messages.errorMessage);
-    const textMessage = useSelector<StateType, string>(state => state.counter.messages.initialMessage);
-    const currentCount = useSelector<StateType, number>(state => state.counter.mainCounts.currentCount);
-    const startCount = useSelector<StateType, number>(state => state.counter.mainCounts.startCount);
-    const maxCount = useSelector<StateType, number>(state => state.counter.mainCounts.maxCount);
+    const dispatch = useTypedDispatch();
+    const {errorMessage: error, initialMessage: textMessage} = useTypedSelector(state => state.counter.messages);
+    const {currentCount, maxCount, startCount} = useTypedSelector(state => state.counter.mainCounts);
 
     const increaseCount = useCallback(() => {
-        dispatch(setCountAC(currentCount + 1))
-    }, [currentCount, dispatch]);
+        dispatch(setCount(currentCount + 1))
+    }, [currentCount, dispatch, setCount]);
 
     const resetCount = useCallback(() => {
-        dispatch(setCountAC(startCount))
-    }, [startCount, dispatch]);
+        dispatch(setCount(startCount))
+    }, [dispatch, setCount, startCount]);
 
     return (
         <div className={classes.wrapperScoreboard}>

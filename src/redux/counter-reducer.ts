@@ -88,30 +88,31 @@ export const setErrorAC = (error: string) => {
         }
     } as const
 };
-export const getValuesToLocalStoreTC = () => (dispatch: (action: ActionsType) => void) => {
 
-    const maxCount = localStorage.getItem('maxCount');
-    const startCount = localStorage.getItem('startCount');
-
-    if (maxCount) {
-        const value = JSON.parse(maxCount);
-        dispatch(setMaxCountAC(value));
-    }
-
-    if (startCount) {
-        const value = JSON.parse(startCount);
-        dispatch(setStartCountAC(value));
-        dispatch(setCountAC(value));
-    }
-}
-
-export const setValuesToLocalStoreTC = () => (dispatch: (action: ActionsType) => void, getState: () => StateType): void => {
-
-    const maxCount = getState().counter.mainCounts.maxCount;
-    const startCount = getState().counter.mainCounts.startCount;
-
-    localStorage.setItem('startCount', JSON.stringify(startCount));
-    localStorage.setItem('maxCount', JSON.stringify(maxCount));
-    dispatch(setMaxCountAC(maxCount));
-    dispatch(setStartCountAC(startCount));
-}
+// export const getValuesToLocalStoreTC = () => (dispatch: (action: ActionsType) => void) => {
+//
+//     const maxCount = localStorage.getItem('maxCount');
+//     const startCount = localStorage.getItem('startCount');
+//
+//     if (maxCount) {
+//         const value = JSON.parse(maxCount);
+//         dispatch(setMaxCountAC(value));
+//     }
+//
+//     if (startCount) {
+//         const value = JSON.parse(startCount);
+//         dispatch(setStartCountAC(value));
+//         dispatch(setCountAC(value));
+//     }
+// }
+// export const setValuesToLocalStoreTC = () => (dispatch: (action: ActionsType) => void, getState: () => StateType): void => {
+//
+//     const maxCount = getState().counter.mainCounts.maxCount;
+//     const startCount = getState().counter.mainCounts.startCount;
+//
+//     localStorage.setItem('startCount', JSON.stringify(startCount));
+//     localStorage.setItem('maxCount', JSON.stringify(maxCount));
+//     dispatch(setMaxCountAC(maxCount));
+//     dispatch(setStartCountAC(startCount));
+// }
+//
