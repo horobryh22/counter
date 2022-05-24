@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import './App.css';
 import {Counter} from './components/Counter/Counter';
 import {Settings} from './components/Settings/Settings';
-import {getValuesToLocalStoreTC} from './toolkit-redux/toolkit-thunk-creators';
 import {useTypedDispatch} from './toolkit-redux/toolkit-store';
+import {getValuesFromLocalStorage} from './toolkit-redux/toolkit-thunk-creators';
 
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     const dispatch = useTypedDispatch();
 
     useEffect(() => {
-        dispatch(getValuesToLocalStoreTC());
+        dispatch(getValuesFromLocalStorage());
     }, []);
 
     return (

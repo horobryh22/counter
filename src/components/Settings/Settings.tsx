@@ -4,7 +4,7 @@ import {Button} from '../Button/Button';
 import classes from './Settings.module.css'
 import {useTypedDispatch, useTypedSelector} from '../../toolkit-redux/toolkit-store';
 import {setCount, setError, setTextMessage} from '../../toolkit-redux/toolkit-counter-slice';
-import {setValuesToLocalStoreTC} from '../../toolkit-redux/toolkit-thunk-creators';
+import {setValuesToLocalStorage} from '../../toolkit-redux/toolkit-thunk-creators';
 
 export const Settings: React.FC = React.memo(() => {
 
@@ -29,7 +29,7 @@ export const Settings: React.FC = React.memo(() => {
 
     const onClickHandler = () => {
         if (!condition) {
-            dispatch(setValuesToLocalStoreTC());
+            dispatch(setValuesToLocalStorage());
             dispatch(setCount(startCount));
             dispatch(setError(''))
             dispatch(setTextMessage(''))

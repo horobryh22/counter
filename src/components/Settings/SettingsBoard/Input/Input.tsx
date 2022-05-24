@@ -17,6 +17,7 @@ export const Input: React.FC<InputType> = React.memo(({name, callback, error, ..
     const inputClassName = error ? classes.input + ' ' + classes.error : classes.input;
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log('hello')
         const value = Number(e.currentTarget.value);
         callback((value));
         dispatch(setTextMessage('Set values and enter "set"'));

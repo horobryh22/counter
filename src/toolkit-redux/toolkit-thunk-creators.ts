@@ -1,30 +1,35 @@
-import {StateType} from '../redux/store';
-import {DispatchType} from './toolkit-store';
-import {setCount, setMaxCount, setStartCount} from './toolkit-counter-slice';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {RootState} from './toolkit-store';
 
-export const getValuesToLocalStoreTC = () => (dispatch: DispatchType): void => {
-
-    const maxCount = localStorage.getItem('maxCount');
-    const startCount = localStorage.getItem('startCount');
-
-    if (maxCount) {
-        const value = JSON.parse(maxCount);
-        dispatch(setMaxCount(value));
-    }
-
-    if (startCount) {
-        const value = JSON.parse(startCount);
-        dispatch(setStartCount(value));
-        dispatch(setCount(value));
-    }
+export type ResponseType = {
+    maxCount: string
+    startCount: string
 }
-export const setValuesToLocalStoreTC = () => (dispatch: DispatchType, getState: () => StateType): void => {
 
-    const maxCount = getState().counter.mainCounts.maxCount;
-    const startCount = getState().counter.mainCounts.startCount;
+export const getValuesFromLocalStorage = createAsyncThunk<ResponseType, undefined, {rejectValue: string}>(
+    'counter/getValuesFromLocalStorage',
+    async (_, {rejectWithValue}) => {
 
-    localStorage.setItem('startCount', JSON.stringify(startCount));
-    localStorage.setItem('maxCount', JSON.stringify(maxCount));
-    dispatch(setMaxCount(maxCount));
-    dispatch(setStartCount(startCount));
-}
+        const maxCount = localStorage.getItem('maxCount');
+        const startCount = localStorage.getItem('startCount');
+
+        if (maxCount && startCount) {
+            return {maxCount, startCount};
+        } else {
+            return rejectWithValue('Не удалось получить данные из Local Storage');
+        }
+    }
+);
+
+export const setValuesToLocalStorage = createAsyncThunk(
+    'counter/setValuesToLocalStorage',
+    async (_, {getState}) => {
+
+        const state = getState() as RootState;
+        const maxCount = state.counter.mainCounts.maxCount;
+        const startCount = state.counter.mainCounts.startCount;
+
+        localStorage.setItem('startCount', JSON.stringify(startCount));
+        localStorage.setItem('maxCount', JSON.stringify(maxCount));
+    }
+);
